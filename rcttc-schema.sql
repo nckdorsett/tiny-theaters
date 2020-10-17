@@ -2,6 +2,25 @@ drop database if exists tiny_theaters;
 create database tiny_theaters;
 use tiny_theaters;
 
+create table excel_data (
+	id int primary key auto_increment,
+    customer_first varchar(75) not null,
+    customer_last varchar(75) not null,
+    customer_email varchar(75) not null,
+    customer_phone varchar(25) not null,
+    customer_address varchar(75) not null,
+    seat varchar(7) not null,
+    `show` varchar(75) not null,
+    ticket_price decimal(4,2) not null,
+    `date` date not null,
+    theater varchar(75) not null,
+    theater_address varchar(75) not null,
+    theater_phone varchar(25) not null,
+    theater_email varchar(75)
+
+);
+
+
 create table seat (
 	seat_id int primary key auto_increment,
     seat_name varchar(5) not null
@@ -31,8 +50,8 @@ create table theater (
 	theater_id int primary key auto_increment,
     `name` varchar(45) not null,
     address_id int not null,
-    email_id int not null,
     phone_id int not null,
+    email_id int not null,
     seat_id int not null,
     constraint fk_theater_address_id
 		foreign key (address_id)
@@ -54,9 +73,9 @@ create table customer (
 	customer_id int primary key auto_increment,
     first_name varchar(45) not null,
     last_name varchar(45) not null,
-    address_id int null,
     email_id int not null,
     phone_id int null,
+    address_id int null,
     constraint fk_customer_address_id
 		foreign key (address_id)
         references address(address_id),
