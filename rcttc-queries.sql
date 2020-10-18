@@ -98,9 +98,9 @@ group by r.customer_id;
 -- Calculate the total revenue per show based on tickets sold.
 select
 	p.performance_title,
-	count(r.reservation_id) as number_of_tickets_purchased,
+	count(tp.cost) as number_of_tickets_purchased,
     tp.cost as ticket_price_$,
-    count(r.reservation_id) * tp.cost as performance_revenue_$
+    count(tp.cost) * tp.cost as performance_revenue_$
 from reservation r
 inner join theater_performance tp on tp.theater_performance_id = r.theater_performance_id
 inner join performance p on p.performance_id = tp.performance_id
@@ -109,9 +109,7 @@ group by p.performance_title, tp.cost;
 -- Calculate the total revenue per theater based on tickets sold.
 select
 	t.`name` as theater_name,
-	count(r.reservation_id) as number_of_tickets_purchased,
-    tp.cost as ticket_price_$,
-    tp.cost * count(r.reservation_id) as theater_revenue_$
+    count(tp.cost) * tp.cost as theater_revenue_$
 from reservation r
 inner join theater_performance tp on tp.theater_performance_id = r.theater_performance_id
 inner join theater t on t.theater_id = tp.theater_id
@@ -126,7 +124,6 @@ select
 from reservation r
 inner join customer c on c.customer_id = r.customer_id
 inner join theater_performance tp on tp.theater_performance_id = r.theater_performance_id
-inner join performance p on p.performance_id = tp.performance_id
 where year(tp.`date`) = '2021' 
 group by r.customer_id, tp.cost
 order by r.customer_id;

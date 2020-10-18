@@ -4071,7 +4071,10 @@ where reservation_id in (3, 4, 12, 20, 66, 93, 96, 108, 145);
 -- Liv Egle of Germany id = 65
 
 delete from reservation
-where customer_id = 65;
+where customer_id = (select
+						customer_id
+					 from customer
+                     where first_name = "Liv" and last_name = "Egle of Germany");
 
 delete from customer
 where customer_id = 65;
