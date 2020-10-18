@@ -3959,35 +3959,27 @@ insert into theater_performance (theater_id, performance_id, `date`, cost)
     inner join theater t on t.`name` = ed.theater
     inner join performance p on p.performance_title = ed.`show`
     order by ed.`date`;
-    
+
+-- common table expressions    
 insert into reservation (theater_performance_id, customer_id, seat_id)
--- 	select
---     distinct (select 
--- 		distinct tp.theater_performance_id 
--- 	from excel_data ed
---     inner join seat s on s.seat_name = ed.seat
---     inner join theater t on t.theater_id = s.seat_id
---     inner join theater_performance tp on tp.theater_id = t.theater_id),
---     (select
--- 		distinct c.customer_id
--- 	from excel_data ed
---     inner join email e on e.email_address = ed.customer_email
---     inner join customer c on c.email_id = e.email_id),
---     (select
--- 		distinct s.seat_id
--- 	from excel_data ed
---     inner join seat s on s.seat_name = ed.seat);
-select
-	distinct tp.theater_performance_id,
-    c.customer_id,
-    s.seat_id
+with
+	seat_with_theater as (
+    select s.seat_id, s.seat_name, t.theater_id, t.`name` as theater_name from theater t
+    join seat s on s.theater_id = t.theater_id),
+    customer_with_email as (
+	select c.customer_id, e.email_address from customer c 
+    join email e on e.email_id = c.email_id)
+    
+select tp.theater_performance_id, cwe.customer_id, swt.seat_id
 from excel_data ed
-left outer join seat s on s.seat_name = ed.seat
-left outer join theater t on t.theater_id = s.theater_id
-left outer join theater_performance tp on tp.theater_id = t.theater_id
-left outer join email e on e.email_address = ed.customer_email
-left outer join customer c on c.email_id = e.email_id
-where c.email_id = 1;
+join seat_with_theater swt on swt.seat_name = ed.seat and swt.theater_name = ed.theater
+join customer_with_email cwe on cwe.email_address = ed.customer_email
+join theater_performance tp on tp.theater_id = swt.theater_id and tp.`date` = ed.`date`
+order by tp.theater_performance_id, cwe.customer_id, swt.seat_id;
+
+select * from reservation;
+
+
 
 
 
