@@ -3977,9 +3977,113 @@ join customer_with_email cwe on cwe.email_address = ed.customer_email
 join theater_performance tp on tp.theater_id = swt.theater_id and tp.`date` = ed.`date`
 order by tp.theater_performance_id, cwe.customer_id, swt.seat_id;
 
-select * from reservation;
+update theater_performance set
+	cost = 22.25
+where theater_id = (select
+		t.theater_id
+	   from theater t
+	   where t.`name` = "Little Fitz")
+       and performance_id = (select 
+		p.performance_id 
+	   from performance p
+       where p.performance_title = "The Sky Lit Up")
+            and `date` = '2021-03-01';
 
+-- select * from theater_performance
+-- where theater_id = (select
+-- 		t.theater_id
+-- 	   from theater t
+-- 	   where t.`name` = "Little Fitz")
+--        and performance_id = (select 
+-- 		p.performance_id 
+-- 	   from performance p
+--        where p.performance_title = "The Sky Lit Up")
+--             and `date` = '2021-03-01';
 
+-- select 
+-- 	r.customer_id,
+-- 	c.first_name,
+--     r.reservation_id,
+--     r.theater_performance_id,
+--     r.seat_id,
+--     s.seat_name
+-- from reservation r
+-- inner join customer c on c.customer_id = r.customer_id
+-- inner join seat s on s.seat_id = r.seat_id
+-- where r.theater_performance_id = 5;
+
+delete from reservation
+where reservation_id = 76;
+
+update reservation set
+	seat_id = 35
+where reservation_id = 74;
+
+update reservation set
+	seat_id = 33
+where reservation_id = 70;
+
+insert into reservation (reservation_id, theater_performance_id, customer_id, seat_id)
+	values (76, 5, 39, 29);
+
+-- select 
+-- 	r.customer_id,
+-- 	c.first_name,
+--     r.reservation_id,
+--     r.theater_performance_id,
+--     r.seat_id,
+--     s.seat_name
+-- from reservation r
+-- inner join customer c on c.customer_id = r.customer_id
+-- inner join seat s on s.seat_id = r.seat_id
+-- where r.theater_performance_id = 5
+-- order by s.seat_name;
+
+update phone set
+	phone_number = '1-801-EAT-CAKE'
+where phone_id = (select
+					phone_id
+				  from customer
+                  where first_name = 'Jammie' and last_name = 'Swindles');
+                  
+-- select * from customer c
+-- inner join phone p on p.phone_id = c.phone_id
+-- where c.first_name = "Jammie" and c.last_name = "Swindles";
+
+-- select 
+-- 	r.customer_id,
+--     r.reservation_id,
+--     r.theater_performance_id,
+--     r.seat_id,
+--     s.seat_name
+-- from reservation r
+-- inner join theater_performance tp on tp.theater_performance_id = r.theater_performance_id
+-- inner join theater t on t.theater_id = tp.theater_id
+-- inner join seat s on s.seat_id = r.seat_id
+-- where t.`name` = "10 Pin"
+-- order by r.theater_performance_id, seat_name;
+    
+delete from reservation
+where reservation_id in (3, 4, 12, 20, 66, 93, 96, 108, 145);
+
+-- select * from customer
+-- where customer_id = 65;
+-- Liv Egle of Germany id = 65
+
+delete from reservation
+where customer_id = 65;
+
+delete from customer
+where customer_id = 65;
+
+delete from email
+where email_id = 65;
+
+delete from phone
+where phone_id = 51;
+
+delete from address
+where address_id = 57;
 
 
 
